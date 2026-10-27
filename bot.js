@@ -69,26 +69,33 @@ async function enviarMenuInicial(jid) {
 }
 
 async function enviarEjemplos(jid) {
-  await enviarImagen(jid, IMG_PAGINA, '🌐 *Ejemplo 1 — Página web completa*\nEnchanted Play Bistro, restaurante temático en Cuenca.\nCarta digital, historia del lugar y reservas directas por WhatsApp.\n👉 https://enchantedplaybistro.com/');
+  await enviarTexto(jid, '¡Hola! 😊 A continuación te compartimos dos ejemplos de nuestro trabajo para que veas la calidad de lo que hacemos.\n\nEl primero es la *landing page completa* que te ofrecemos, y el segundo es el *menú digital interactivo con QR* que viene incluido en esa misma propuesta. ¡Échales un vistazo! 👇');
+  await delay(1000);
+  await enviarImagen(jid, IMG_PAGINA, '🌐 *Ejemplo 1 — Landing page completa*\nEnchanted Play Bistro, restaurante temático en Cuenca.\nCarta digital, historia del lugar y reservas directas por WhatsApp.\n👉 https://enchantedplaybistro.com/');
   await delay(1500);
-  await enviarImagen(jid, IMG_MENU_QR, '🍽️ *Ejemplo 2 — Menú interactivo con QR*\nSus clientes lo escanean desde la mesa. Sin papeles, siempre actualizado y con el estilo de tu restaurante.\n👉 https://enchantedplaybistro.com/menu/');
+  await enviarImagen(jid, IMG_MENU_QR, '🍽️ *Ejemplo 2 — Menú digital interactivo con QR*\nSus clientes lo escanean desde la mesa. Sin papeles, siempre actualizado y con el estilo de tu restaurante.\n👉 https://enchantedplaybistro.com/menu/');
   await delay(1500);
-  await enviarTexto(jid, '✨ *Trabajamos contigo hasta que el resultado final te deje 100% satisfecho/a.*\n\n¿Qué deseas hacer?\n\n1️⃣ Ver qué incluye y precio\n2️⃣ Quiero empezar\n3️⃣ Hablar con un asesor');
+  await enviarTexto(jid, '✨ *¿Qué incluye tu página web?*\n\n✅ Diseño profesional con tu identidad visual\n✅ Menú digital interactivo\n✅ Código QR imprimible para tus mesas (formato A5)\n✅ Botón de reservas directo a WhatsApp\n✅ Optimizada para celular\n✅ Dominio y hosting el primer año\n✅ Revisiones hasta que quedes 100% satisfecho/a\n\n¿Qué deseas hacer?\n\n1️⃣ Ver precio\n2️⃣ Hablar con un asesor');
   getUsuario(jid).etapa = 'post_ejemplos';
 }
 
 async function enviarPrecio(jid) {
-  await enviarImagen(jid, IMG_ABONO, '💼 *¿Qué incluye tu página web?*\n\n✅ Diseño profesional con tu identidad visual\n✅ Menú digital interactivo\n✅ Código QR imprimible para tus mesas (formato A5)\n✅ Botón de reservas directo a WhatsApp\n✅ Optimizada para celular\n✅ Dominio y hosting el primer año\n✅ Revisiones hasta que quedes 100% satisfecho/a\n\n💰 Inversión total: *$130*\n🤝 Empiezas con solo *$10 de abono* y el resto al entregar.\n\n¿Qué deseas hacer?\n\n1️⃣ Quiero empezar\n2️⃣ Tengo una pregunta\n3️⃣ Hablar con un asesor');
+  await enviarImagen(jid, IMG_ABONO, '💰 *Inversión total: $130*\n🤝 Empiezas con solo *$10 de abono* y el resto al entregar.\n\n🚀 *¿Por qué vale la pena para tu restaurante?*\n\n📈 Más clientes: apareces profesional en Google y redes sociales\n📲 Más pedidos: tus clientes pueden ver tu menú y escribirte directo por WhatsApp desde la página\n⭐ Más confianza: un restaurante con página web transmite seriedad y calidad\n🍽️ Menú siempre actualizado: sin imprimir cartas cada vez que cambias algo\n\n*Trabajamos contigo hasta que el resultado final te deje 100% satisfecho/a.* ✨\n\n¿Qué deseas hacer?\n\n1️⃣ Quiero empezar\n2️⃣ ¿A dónde transfiero el abono?\n3️⃣ Hablar con un asesor');
   getUsuario(jid).etapa = 'post_precio';
 }
 
 async function enviarDatosBancarios(jid) {
+  await enviarTexto(jid, '🏦 *Datos para el abono de $10:*\n\n🏦 Banco Pichincha\n💳 Cuenta: 2216652652\n🪪 Cédula: 1104753122\n👤 Titular: ALVAREZ GRANDA, GUIDO CRISTOPHER\n\nUna vez realizado el abono, cuéntanos el nombre de tu restaurante y comenzamos de inmediato. 🚀\n\nSi tienes alguna duda, estamos para servirte. 😊');
+  getUsuario(jid).etapa = 'esperando_abono';
+}
+
+async function enviarInicioProyecto(jid) {
   await enviarTexto(jid, '🎉 ¡Excelente decisión! Para apartar tu lugar realizas un abono de *$10*:\n\n🏦 *Banco Pichincha*\n💳 Cuenta: 2216652652\n🪪 Cédula: 1104753122\n👤 Titular: ALVAREZ GRANDA, GUIDO CRISTOPHER\n\nUna vez realizado el abono, cuéntanos el nombre de tu restaurante y comenzamos de inmediato. 🚀\n\nSi tienes alguna duda, estamos para servirte. 😊');
   getUsuario(jid).etapa = 'esperando_abono';
 }
 
-async function notificarDueno(jid, nombre, mensaje) {
-  await sock.sendMessage(DUENO_JID, { text: '🔔 *Cliente solicitó asesor*\n📱 Número: ' + jid.replace('@s.whatsapp.net', '') + '\n👤 Mensaje: ' + mensaje });
+async function notificarDueno(jid, mensaje) {
+  await sock.sendMessage(DUENO_JID, { text: '🔔 *Cliente solicitó asesor*\n📱 Número: ' + jid.replace('@s.whatsapp.net', '') + '\n💬 Mensaje: ' + mensaje });
   await enviarTexto(jid, '👋 Perfecto, en breve un asesor se pondrá en contacto contigo. ¡Gracias por tu interés! 😊');
   getUsuario(jid).etapa = 'esperando_asesor';
 }
@@ -96,7 +103,7 @@ async function notificarDueno(jid, nombre, mensaje) {
 function programarSeguimientos(jid) {
   setTimeout(async () => {
     const u = getUsuario(jid);
-    if (u.duenoAtendio || u.etapa === 'esperando_abono' || u.etapa === 'esperando_asesor') return;
+    if (u.duenoAtendio || u.etapa === 'esperando_abono' || u.etapa === 'esperando_asesor' || u.etapa === 'en_proceso') return;
     await enviarImagen(jid, IMG_PAGINA, '👋 ¡Hola! Solo quería compartirte este ejemplo de lo que podemos hacer para tu restaurante. 🍽️\n👉 https://enchantedplaybistro.com/\n\n¿Te gustaría algo así? Puedo contarte más detalles. 😊');
   }, 7 * 60 * 1000);
 
@@ -105,19 +112,19 @@ function programarSeguimientos(jid) {
   manana10am.setHours(10, 0, 0, 0);
   setTimeout(async () => {
     const u = getUsuario(jid);
-    if (u.duenoAtendio || u.etapa === 'esperando_abono' || u.etapa === 'esperando_asesor') return;
+    if (u.duenoAtendio || u.etapa === 'esperando_abono' || u.etapa === 'esperando_asesor' || u.etapa === 'en_proceso') return;
     await enviarTexto(jid, '🌞 ¡Buenos días! Queríamos saber si pudo revisar la información sobre la página web para su restaurante. ¿Tiene alguna pregunta? Con gusto le ayudamos. 😊');
   }, manana10am.getTime() - Date.now());
 
   setTimeout(async () => {
     const u = getUsuario(jid);
-    if (u.duenoAtendio || u.etapa === 'esperando_abono' || u.etapa === 'esperando_asesor') return;
+    if (u.duenoAtendio || u.etapa === 'esperando_abono' || u.etapa === 'esperando_asesor' || u.etapa === 'en_proceso') return;
     await enviarImagen(jid, IMG_MENU_QR, '🍽️ ¿Sabías que cada vez más restaurantes están reemplazando el menú físico por uno digital con código QR?\n\nSus clientes lo escanean desde la mesa, sin necesidad de tocar nada. Siempre actualizado, con fotos y el estilo de tu local. ✨\n\nTe lo hacemos incluido en tu página web. ¿Hablamos? 😊');
   }, 3 * 24 * 60 * 60 * 1000);
 
   setTimeout(async () => {
     const u = getUsuario(jid);
-    if (u.duenoAtendio || u.etapa === 'esperando_abono' || u.etapa === 'esperando_asesor') return;
+    if (u.duenoAtendio || u.etapa === 'esperando_abono' || u.etapa === 'esperando_asesor' || u.etapa === 'en_proceso') return;
     await enviarTexto(jid, '👋 ¡Hola! Le saluda Cristopher de Neuroproductos. Hace unos días nos consultó sobre una página web para su restaurante.\n\nSi sigue interesado/a, con gusto retomamos. El proceso es sencillo, empezamos con solo $10 de abono y trabajamos hasta que quede 100% satisfecho/a. 🙌\n\n¿Le gustaría que le cuente más detalles?');
   }, 7 * 24 * 60 * 60 * 1000);
 }
@@ -131,38 +138,43 @@ async function procesarMensaje(jid, texto) {
     const msg = texto.trim().toLowerCase();
     const esOpcion = (n) => msg === n || msg === (n + '.') || msg.startsWith(n + ' ');
 
-    if (u.etapa === 'inicio' || ['hola','buenas','buenos días','buenas tardes','buenas noches','info','información','informacion','quiero más información','quiero mas informacion'].some(s => msg.includes(s))) {
+    const saludos = ['hola','buenas','buenos días','buenas tardes','buenas noches','info','información','informacion','quiero más información','quiero mas informacion'];
+    if (u.etapa === 'inicio' || saludos.some(s => msg.includes(s))) {
       await enviarMenuInicial(jid);
       programarSeguimientos(jid);
       return;
     }
+
     if (u.etapa === 'menu_principal') {
       if (esOpcion('1')) { await enviarEjemplos(jid); }
-      else if (esOpcion('2')) { await enviarEjemplos(jid); await delay(500); getUsuario(jid).etapa = 'post_ejemplos_precio'; }
-      else if (esOpcion('3')) { await notificarDueno(jid, '', texto); }
+      else if (esOpcion('2')) { await enviarEjemplos(jid); }
+      else if (esOpcion('3')) { await notificarDueno(jid, texto); }
       else { await enviarMenuInicial(jid); }
       return;
     }
+
     if (u.etapa === 'post_ejemplos') {
       if (esOpcion('1')) { await enviarPrecio(jid); }
-      else if (esOpcion('2')) { await enviarDatosBancarios(jid); }
-      else if (esOpcion('3')) { await notificarDueno(jid, '', texto); }
-      else { await enviarTexto(jid, 'Responde con *1*, *2* o *3* según lo que necesites. 😊'); }
+      else if (esOpcion('2')) { await notificarDueno(jid, texto); }
+      else { await enviarTexto(jid, 'Responde con *1* o *2* según lo que necesites. 😊'); }
       return;
     }
-    if (u.etapa === 'post_ejemplos_precio') { await enviarPrecio(jid); return; }
+
     if (u.etapa === 'post_precio') {
-      if (esOpcion('1')) { await enviarDatosBancarios(jid); }
-      else if (esOpcion('2') || esOpcion('3')) { await notificarDueno(jid, '', texto); }
+      if (esOpcion('1')) { await enviarInicioProyecto(jid); }
+      else if (esOpcion('2')) { await enviarDatosBancarios(jid); }
+      else if (esOpcion('3')) { await notificarDueno(jid, texto); }
       else { await enviarTexto(jid, 'Responde con *1*, *2* o *3* según lo que necesites. 😊'); }
       return;
     }
+
     if (u.etapa === 'esperando_abono') {
-      await notificarDueno(jid, '', texto);
+      await notificarDueno(jid, texto);
       await enviarTexto(jid, '¡Recibido! Un asesor revisará tu abono y te contactará pronto para comenzar con tu página web. 🚀');
       u.etapa = 'en_proceso';
       return;
     }
+
     await enviarMenuInicial(jid);
   } finally {
     procesando.delete(jid);
