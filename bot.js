@@ -2,6 +2,14 @@ const { default: makeWASocket, useMultiFileAuthState, DisconnectReason, fetchLat
 const pino = require('pino');
 const express = require('express');
 const qrcode = require('qrcode');
+const fs2 = require('fs');
+
+// Limpiar sesión corrupta al arrancar para forzar QR nuevo
+const AUTH_DIR = 'auth_info_baileys';
+if (fs2.existsSync(AUTH_DIR)) {
+  fs2.rmSync(AUTH_DIR, { recursive: true, force: true });
+  console.log('sesion anterior eliminada, generando QR limpio...');
+}
 
 const app = express();
 const PORT = process.env.PORT || 3000;
