@@ -101,20 +101,31 @@ async function notificarDueno(jid, mensaje) {
 }
 
 function programarSeguimientos(jid) {
+  // 7 minutos: saludo de Cisne
   setTimeout(async () => {
     const u = getUsuario(jid);
     if (u.duenoAtendio || u.etapa === 'esperando_abono' || u.etapa === 'esperando_asesor' || u.etapa === 'en_proceso') return;
-    await enviarImagen(jid, IMG_PAGINA, '👋 ¡Hola! Solo quería compartirte este ejemplo de lo que podemos hacer para tu restaurante. 🍽️\n👉 https://enchantedplaybistro.com/\n\n¿Te gustaría algo así? Puedo contarte más detalles. 😊');
+    await enviarTexto(jid, '¡Hola! 😊 Soy Cisne de Neuroproductos. ¿Tiene alguna pregunta sobre nuestros servicios? Con gusto le ayudo.');
   }, 7 * 60 * 1000);
 
-  const manana10am = new Date();
-  manana10am.setDate(manana10am.getDate() + 1);
-  manana10am.setHours(10, 0, 0, 0);
+  // 10 minutos: ejemplos de otros nichos
+  setTimeout(async () => {
+    const u = getUsuario(jid);
+    if (u.duenoAtendio || u.etapa === 'esperando_abono' || u.etapa === 'esperando_asesor' || u.etapa === 'en_proceso') return;
+    await enviarTexto(jid, '🌐 También te comparto otros trabajos que hemos realizado en distintos nichos por si gustas revisarlos:\n👉 https://vilcagro.com/\n👉 https://delaroma.com.ec/');
+    await delay(1500);
+    await enviarTexto(jid, '¿Te gustaría algo así para tu restaurante? Si tienes alguna pregunta, coméntanos, ¡estamos para servirte! 😊');
+  }, 10 * 60 * 1000);
+
+  // Día siguiente 11:45am
+  const manana1145 = new Date();
+  manana1145.setDate(manana1145.getDate() + 1);
+  manana1145.setHours(11, 45, 0, 0);
   setTimeout(async () => {
     const u = getUsuario(jid);
     if (u.duenoAtendio || u.etapa === 'esperando_abono' || u.etapa === 'esperando_asesor' || u.etapa === 'en_proceso') return;
     await enviarTexto(jid, '🌞 ¡Buenos días! Queríamos saber si pudo revisar la información sobre la página web para su restaurante. ¿Tiene alguna pregunta? Con gusto le ayudamos. 😊');
-  }, manana10am.getTime() - Date.now());
+  }, manana1145.getTime() - Date.now());
 
   setTimeout(async () => {
     const u = getUsuario(jid);
